@@ -1,4 +1,3 @@
 <app-gallery *ngIf="!switchAudio"></app-gallery>
 <app-audio-player *ngIf="switchAudio"></app-audio-player>
-<!-- <app-audio1 *ngIf="switchAudio"></app-audio1> -->
 <button (click)="swtich()" type="button" class="btn btn-primary"> {{ switchAudio ? 'Switch to Slider' : 'Switch to Audio' }}</button>

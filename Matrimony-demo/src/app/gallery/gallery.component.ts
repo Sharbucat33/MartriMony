@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 
 declare const bootstrap: any;
 
@@ -7,7 +13,7 @@ declare const bootstrap: any;
   templateUrl: './gallery.component.html',
   styleUrls: ['./gallery.component.scss'],
 })
-export class GalleryComponent implements AfterViewInit {
+export class GalleryComponent implements AfterViewInit, OnDestroy {
   @ViewChild('carouselElement', { static: true }) carouselElement!: ElementRef;
   carousel: any;
   images = [
@@ -17,15 +23,19 @@ export class GalleryComponent implements AfterViewInit {
     '../../assets/Images/1 (4).jpeg',
   ];
   currentIndex = 0;
+  referenceCarouselElement: any;
+  handleTouchStart: any;
+  handleTouchEnd: any;
+  handleSlide: any;
 
   /**
    * @method AfterViewInit()
    * @description to set the carousel touch swiping in mobile view
    */
   ngAfterViewInit(): void {
-    const el = this.carouselElement.nativeElement;
+    this.referenceCarouselElement = this.carouselElement.nativeElement;
 
-    this.carousel = new bootstrap.Carousel(el, {
+    this.carousel = new bootstrap.Carousel(this.referenceCarouselElement, {
       interval: false,
       ride: false,
       touch: true,
@@ -34,11 +44,11 @@ export class GalleryComponent implements AfterViewInit {
 
     let startX = 0;
 
-    const handleTouchStart = (e: TouchEvent) => {
+    this.handleTouchStart = (e: TouchEvent) => {
       startX = e.touches[0].clientX;
     };
 
-    const handleTouchEnd = (e: TouchEvent) => {
+    this.handleTouchEnd = (e: TouchEvent) => {
       const endX = e.changedTouches[0].clientX;
       const diff = endX - startX;
 
@@ -49,11 +59,24 @@ export class GalleryComponent implements AfterViewInit {
       }
     };
 
-    el.addEventListener('slid.bs.carousel', (event: any) => {
+    this.handleSlide = (event: any) => {
       this.currentIndex = event.to;
-    });
-    el.addEventListener('touchstart', handleTouchStart, { passive: true });
-    el.addEventListener('touchend', handleTouchEnd, { passive: true });
+    };
+
+    this.referenceCarouselElement.addEventListener(
+      'slid.bs.carousel',
+      this.handleSlide
+    );
+    this.referenceCarouselElement.addEventListener(
+      'touchstart',
+      this.handleTouchStart,
+      { passive: true }
+    );
+    this.referenceCarouselElement.addEventListener(
+      'touchend',
+      this.handleTouchEnd,
+      { passive: true }
+    );
   }
 
   /**
@@ -64,5 +87,21 @@ export class GalleryComponent implements AfterViewInit {
   goToSlide(index: number) {
     this.currentIndex = index;
     this.carousel.to(index);
+  }
+
+  ngOnDestroy(): void {
+    this.referenceCarouselElement.removeEventListener(
+      'touchstart',
+      this.handleTouchStart
+    );
+    this.referenceCarouselElement.removeEventListener(
+      'touchend',
+      this.handleTouchEnd
+    );
+
+    this.referenceCarouselElement.removeEventListener(
+      'slid.bs.carousel',
+      this.handleSlide
+    );
   }
 }

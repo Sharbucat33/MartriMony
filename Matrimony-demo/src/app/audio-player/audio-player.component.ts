@@ -160,7 +160,7 @@ export class AudioPlayerComponent implements OnDestroy, AfterViewInit {
    * @method submit()
    */
   submit() {
-    // Handle submit logic here
+    // to handle submit logic
     alert('Audio submitted!');
   }
 
