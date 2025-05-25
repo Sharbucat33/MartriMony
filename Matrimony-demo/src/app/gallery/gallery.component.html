@@ -1,0 +1,84 @@
+<!-- <div class="container-fluid p-3 text-center">
+  <div
+    id="carouselExample"
+    class="carousel slide"
+    data-bs-ride="carousel"
+    data-bs-touch="true"
+    (slid.bs.carousel)="onSlideChange($event)"
+  >
+    <div class="carousel-inner">
+      <div
+        class="carousel-item"
+        *ngFor="let image of images; let i = index"
+        [ngClass]="{ active: i === currentIndex }"
+      >
+        <img
+          [src]="image"
+          class="carousel-img responsive-img mx-auto d-block rounded-4"
+          alt="gallery image"
+        />
+      </div>
+    </div>
+
+    <div
+      class="carousel-indicators position-relative justify-content-center mt-3"
+    >
+      <button
+        *ngFor="let image of images; let i = index"
+        type="button"
+        data-bs-target="#carouselExample"
+        [attr.data-bs-slide-to]="i"
+        [ngClass]="{
+          'carousel-dot': true,
+          active: i === currentIndex
+        }"
+        [attr.aria-label]="'Slide ' + (i + 1)"
+        (click)="goToSlide(i)"
+      ></button>
+    </div>
+
+    <p class="text-muted mt-2">
+      Photos {{ currentIndex + 1 }}/{{ images.length }}
+    </p>
+  </div>
+</div> -->
+
+<div
+  class="container gallery-container d-flex flex-column align-items-center justify-content-center vh-100"
+>
+  <div class="w-100 d-flex align-items-center mb-2">
+    <span class="fw-bold"
+      >Photos {{ currentIndex + 1 }}/{{ images.length }}</span
+    >
+  </div>
+  <div
+    #carouselElement
+    id="carouselExample"
+    class="carousel slide w-100"
+    data-bs-ride="carousel"
+  >
+    <div class="carousel-inner rounded shadow">
+      <div
+        *ngFor="let img of images; let i = index"
+        class="carousel-item"
+        [class.active]="i === 0"
+      >
+        <img [src]="img" class="d-block w-100 gallery-img responsive-img" />
+      </div>
+    </div>
+    <div class="carousel-indicators">
+      <button
+        *ngFor="let img of images; let i = index"
+        type="button"
+        data-bs-target="#carouselExample"
+        [attr.data-bs-slide-to]="i"
+        [ngClass]="{
+          'carousel-dot': true,
+          active: i === currentIndex
+        }"
+        [attr.aria-label]="'Slide ' + (i + 1)"
+        (click)="goToSlide(i)"
+      ></button>
+    </div>
+  </div>
+</div>

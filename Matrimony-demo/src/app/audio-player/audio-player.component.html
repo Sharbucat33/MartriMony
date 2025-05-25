@@ -1,0 +1,92 @@
+<div
+  class="container-fluid d-flex flex-column align-items-center justify-content-center vh-100"
+>
+  <div class="w-100 main-contianer">
+    <div class="card p-4 text-center main-section">
+      <div class="mb-3">
+        <div
+          class="rounded-circle mx-auto d-flex align-items-center justify-content-center top-icon-section"
+        >
+          <i class="bi bi-mic top-micicon"></i>
+        </div>
+      </div>
+      <div class="waveform-container mb-2">
+        <!-- dummy wave on intial -->
+
+        <!-- <div 
+          id="placeholder-waveform"
+          *ngIf="!isRecording && !audioUrl"
+          class="placeholder-wave d-flex align-items-end"
+        >
+          <div
+            *ngFor="let bar of dummyWaveBars"
+            class="bar"
+            [style.height.%]="bar"
+          ></div>
+        </div> --> 
+        
+        <div id="waveform"></div>
+        <button
+          *ngIf="audioUrl"
+          class="btn btn-link cancel-btn"
+          (click)="reset()"
+          aria-label="Cancel"
+        >
+          <i class="bi bi-x-circle"></i>
+        </button>
+      </div>
+      <div class="mb-3">
+        <strong
+          >{{ formattedTimer }}/{{
+            isRecording ? "0:30" : formattedAudioDuration
+          }}</strong
+        >
+      </div>
+      <div class="mb-3">
+        <button
+          class="play-btn"
+          (click)="
+            audioUrl
+              ? playAudio()
+              : isRecording
+              ? stopRecording()
+              : startRecording()
+          "
+        >
+          <i *ngIf="!audioUrl && stopPlaying" class="bi bi-play-fill"></i>
+          <i
+            *ngIf="audioUrl && stopPlaying"
+            [ngClass]="
+              isplaying ? 'bi bi-pause-circle-fill' : 'bi bi-play-fill'
+            "
+          ></i>
+          <span
+            *ngIf="!audioUrl && !isRecording && !stopPlaying"
+            class="mic-dot"
+          ></span>
+          <span
+            *ngIf="isRecording && !stopPlaying"
+            class="recording-dot"
+          ></span>
+        </button>
+      </div>
+      <div class="mb-4">
+        <span *ngIf="!audioUrl && !stopPlaying">{{
+          isRecording ? "Recording..." : "Tap to start recording"
+        }}</span>
+        <span *ngIf="!audioUrl && stopPlaying">Tap to play</span>
+        <span *ngIf="audioUrl && stopPlaying">
+          {{ isplaying ? "Tap to pause" : "Tap to play" }}</span
+        >
+      </div>
+    </div>
+    <button
+      class="btn w-100 mt-4"
+      [ngClass]="audioUrl ? 'btn-gradient' : 'btn-secondary'"
+      [disabled]="!audioUrl"
+      (click)="submit()"
+    >
+      {{ audioUrl ? "Submit" : "Next" }}
+    </button>
+  </div>
+</div>
